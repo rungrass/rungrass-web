@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '런잔디',
     description: '러닝 잔디밭을 확인하세요 🌱',
-    url: 'https://run-daily-eta.vercel.app/',
+    url: 'https://run-grass.com',
     siteName: '런잔디',
     images: [
       {
