@@ -71,7 +71,11 @@ export default function ShareImage({ activities, totalDays, year, activityMap, t
   return (
     <div className="bg-white dark:bg-gray-900 p-8 rounded-lg space-y-8 w-[600px]">
       <div className="flex items-center justify-center gap-8">
-        <MedalProfile distance={totalDistance || 0} profileUrl={user?.profile || '/images/profile-default.png'} />
+        <MedalProfile
+          distance={totalDistance || 0}
+          profileUrl={user?.profile || '/images/profile-default.png'}
+          isImage
+        />
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
             {user?.username || `${user?.firstname} ${user?.lastname}`}님의
