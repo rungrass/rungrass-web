@@ -7,7 +7,11 @@ export type UseQueryCustomOptions<TData = unknown, TError = AxiosError, TQueryKe
 >
 
 // 무한 스크롤 쿼리용 새로운 타입
-export type UseInfiniteQueryCustomOptions<TData> = Omit<
-  UseInfiniteQueryOptions<TData, AxiosError, InfiniteData<TData, number>, TData, string[], number>,
+export type UseInfiniteQueryCustomOptions<
+  TQueryFnData = unknown,
+  TQueryKey extends QueryKey = QueryKey,
+  TPageParam = unknown,
+> = Omit<
+  UseInfiniteQueryOptions<TQueryFnData, AxiosError, InfiniteData<TQueryFnData, TPageParam>, TQueryKey, TPageParam>,
   'queryKey' | 'queryFn'
 >
