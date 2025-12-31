@@ -19,6 +19,7 @@ import { useGetActivities } from "@/hooks/queries/useGetActivities";
 import { useQueryError } from "@/hooks/useQueryError";
 import { useResponsive } from "@/hooks/useResponsive";
 import { toast } from "@/hooks/use-toast";
+import { copyImageToClipboard, isIOS } from "@/lib/share-utils";
 
 type NavigatorWithCanShare = Navigator & {
   canShare?: (data: ShareData) => boolean;
@@ -214,6 +215,19 @@ export default function ActivityGrid({ totalDistance }: ActivityGridProps) {
             });
             return;
           }
+
+          // iOS에서 공유 실패 시 클립보드 복사 시도
+          if (isIOS()) {
+            const clipboardSuccess = await copyImageToClipboard(blob);
+            if (clipboardSuccess) {
+              t.update({
+                id: t.id,
+                title: "✓ 이미지를 클립보드에 복사했습니다!",
+                description: "원하는 앱에 붙여넣기 하세요.",
+              });
+              return;
+            }
+          }
           // 공유 실패 시 다운로드 fallback으로 이어짐
         }
       }
@@ -231,9 +245,11 @@ export default function ActivityGrid({ totalDistance }: ActivityGridProps) {
       t.update({
         id: t.id,
         title: "이미지 다운로드",
-        description: canNativeShareFiles
-          ? "공유가 실패하여 다운로드로 대체했어요."
-          : "브라우저가 파일 공유를 지원하지 않아 다운로드로 대체했어요.",
+        description: isIOS()
+          ? "공유가 지원되지 않아 다운로드로 저장했습니다. 사진 앱에서 공유하세요."
+          : canNativeShareFiles
+            ? "공유가 실패하여 다운로드로 대체했어요."
+            : "브라우저가 파일 공유를 지원하지 않아 다운로드로 대체했어요.",
       });
     } catch (error) {
       console.error("Failed to share:", error);
